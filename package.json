@@ -1,0 +1,9 @@
+{
+  "name": "bizplan-ai",
+  "version": "1.0.0",
+  "description": "Générateur IA de Business Plans Excel pour l'Afrique Francophone",
+  "private": true,
+  "dependencies": {
+    "@google/generative-ai": "^0.24.0"
+  }
+}

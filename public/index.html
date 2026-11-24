@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="BizPlan AI - Générateur intelligent de business plans bancables en format Excel pour l'Afrique Francophone. Créez votre plan d'affaires professionnel en quelques minutes.">
+  <meta name="keywords" content="business plan, plan d'affaires, Excel, Afrique, francophone, IA, générateur, bancable, FCFA">
+  <meta name="author" content="BizPlan AI">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="BizPlan AI - Générateur de Business Plan Bancable">
+  <meta property="og:description" content="Créez des business plans Excel professionnels et bancables pour l'Afrique Francophone grâce à l'intelligence artificielle.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:site_name" content="BizPlan AI">
+
+  <title>BizPlan AI - Générateur de Business Plan Bancable</title>
+
+  <!-- Favicon emoji 📊 -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
+
+  <!-- Google Fonts - Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- ExcelJS -->
+  <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
+
+  <!-- Marked.js -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <!-- Feuille de styles principale -->
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- HEADER / BARRE DE NAVIGATION                              -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <header class="navbar" role="banner">
+    <div class="navbar-brand" aria-label="Logo BizPlan AI">
+      <span class="navbar-logo" aria-hidden="true">📊</span>
+      <div class="navbar-title">
+        <h1>BizPlan AI</h1>
+        <span class="navbar-subtitle">Afrique Francophone</span>
+      </div>
+    </div>
+
+    <nav class="navbar-actions" aria-label="Actions principales">
+      <button id="new-chat-btn" class="btn btn-secondary" aria-label="Nouveau business plan">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        Nouveau
+      </button>
+
+      <div id="credits-display" class="credits-display" aria-label="Crédits restants">
+        <span class="credits-icon" aria-hidden="true">🎟️</span>
+        <span class="credits-text">3 plans gratuits</span>
+      </div>
+
+      <button id="upgrade-btn" class="btn btn-primary" aria-label="Passer à la version Pro">
+        <span aria-hidden="true">⭐</span> Upgrade
+      </button>
+    </nav>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- CONTENEUR PRINCIPAL - DEUX PANNEAUX                       -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <main class="main-container" role="main">
+
+    <!-- ─────────────────────────────────────────────────────── -->
+    <!-- PANNEAU GAUCHE : CHAT                                   -->
+    <!-- ─────────────────────────────────────────────────────── -->
+    <section class="chat-panel" id="chat-panel" aria-label="Assistant Business Plan">
+
+      <!-- En-tête du chat -->
+      <div class="chat-header">
+        <div class="chat-header-info">
+          <h2>Assistant Business Plan</h2>
+          <div class="chat-status">
+            <span class="status-dot online" aria-hidden="true"></span>
+            <span class="status-text">En ligne</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Zone des messages -->
+      <div id="chat-messages" class="chat-messages" role="log" aria-live="polite" aria-label="Messages du chat">
+
+        <!-- Écran d'accueil -->
+        <div id="welcome-screen" class="welcome-screen">
+          <div class="welcome-icon" aria-hidden="true">📊</div>
+          <h3 class="welcome-title">Bienvenue sur BizPlan AI</h3>
+          <p class="welcome-subtitle">
+            Décrivez votre projet d'entreprise et je génère un business plan Excel professionnel et bancable.
+          </p>
+
+          <!-- Grille de prompts exemples -->
+          <div class="prompt-grid" role="list" aria-label="Exemples de projets">
+            <button class="prompt-card" role="listitem"
+              data-prompt="Ferme avicole de 5000 poulets de chair à Douala, Cameroun"
+              aria-label="Exemple : Ferme avicole à Douala">
+              <span class="prompt-card-icon" aria-hidden="true">🐔</span>
+              <span class="prompt-card-text">Ferme avicole de 5000 poulets de chair à Douala, Cameroun</span>
+            </button>
+
+            <button class="prompt-card" role="listitem"
+              data-prompt="Restaurant de cuisine africaine à Abidjan, Côte d'Ivoire"
+              aria-label="Exemple : Restaurant à Abidjan">
+              <span class="prompt-card-icon" aria-hidden="true">🍽️</span>
+              <span class="prompt-card-text">Restaurant de cuisine africaine à Abidjan, Côte d'Ivoire</span>
+            </button>
+
+            <button class="prompt-card" role="listitem"
+              data-prompt="Salon de coiffure et esthétique à Dakar, Sénégal"
+              aria-label="Exemple : Salon de coiffure à Dakar">
+              <span class="prompt-card-icon" aria-hidden="true">💇</span>
+              <span class="prompt-card-text">Salon de coiffure et esthétique à Dakar, Sénégal</span>
+            </button>
+
+            <button class="prompt-card" role="listitem"
+              data-prompt="Service de livraison rapide à Kinshasa, RDC"
+              aria-label="Exemple : Livraison à Kinshasa">
+              <span class="prompt-card-icon" aria-hidden="true">🚚</span>
+              <span class="prompt-card-text">Service de livraison rapide à Kinshasa, RDC</span>
+            </button>
+
+            <button class="prompt-card" role="listitem"
+              data-prompt="Exploitation agricole de cacao à San Pedro, Côte d'Ivoire"
+              aria-label="Exemple : Exploitation de cacao à San Pedro">
+              <span class="prompt-card-icon" aria-hidden="true">🌾</span>
+              <span class="prompt-card-text">Exploitation agricole de cacao à San Pedro, Côte d'Ivoire</span>
+            </button>
+
+            <button class="prompt-card" role="listitem"
+              data-prompt="Boutique de vente de téléphones à Brazzaville, Congo"
+              aria-label="Exemple : Boutique de téléphones à Brazzaville">
+              <span class="prompt-card-icon" aria-hidden="true">🏪</span>
+              <span class="prompt-card-text">Boutique de vente de téléphones à Brazzaville, Congo</span>
+            </button>
+          </div>
+        </div>
+        <!-- Fin écran d'accueil -->
+
+      </div>
+
+      <!-- Zone de saisie du chat -->
+      <div class="chat-input-area">
+        <div class="chat-input-container">
+          <textarea
+            id="chat-input"
+            class="chat-input"
+            placeholder="Décrivez votre projet d'entreprise..."
+            rows="1"
+            aria-label="Saisissez votre message"
+          ></textarea>
+          <button id="chat-send-btn" class="chat-send-btn" aria-label="Envoyer le message">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </div>
+        <p class="chat-disclaimer">
+          BizPlan AI peut faire des erreurs. Vérifiez les données financières.
+        </p>
+      </div>
+
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+    <!-- PANNEAU DROIT : TABLEUR / SPREADSHEET                   -->
+    <!-- ─────────────────────────────────────────────────────── -->
+    <section class="spreadsheet-panel" id="spreadsheet-panel" aria-label="Visualiseur de Business Plan Excel">
+
+      <!-- État vide (affiché par défaut) -->
+      <div id="spreadsheet-empty" class="spreadsheet-empty">
+        <div class="spreadsheet-empty-icon" aria-hidden="true">📋</div>
+        <h3 class="spreadsheet-empty-title">Votre Business Plan apparaîtra ici</h3>
+        <p class="spreadsheet-empty-subtitle">Commencez par décrire votre projet dans le chat</p>
+      </div>
+
+      <!-- Barre d'outils du tableur (masquée initialement) -->
+      <div id="spreadsheet-toolbar" class="spreadsheet-toolbar" hidden aria-label="Barre d'outils du tableur">
+        <div class="toolbar-left">
+          <span class="toolbar-file-icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+            </svg>
+          </span>
+          <span id="spreadsheet-filename" class="toolbar-filename">business_plan.xlsx</span>
+        </div>
+        <div class="toolbar-right">
+          <button id="download-btn" class="btn btn-success" aria-label="Télécharger le fichier Excel">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Télécharger
+          </button>
+          <button id="fullscreen-btn" class="btn btn-icon" aria-label="Basculer en plein écran">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <polyline points="9 21 3 21 3 15"></polyline>
+              <line x1="21" y1="3" x2="14" y2="10"></line>
+              <line x1="3" y1="21" x2="10" y2="14"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Barre de formule (masquée initialement) -->
+      <div id="formula-bar" class="formula-bar" hidden aria-label="Barre de formule">
+        <span id="cell-ref" class="cell-ref">A1</span>
+        <span class="formula-fx" aria-hidden="true">fx</span>
+        <span id="cell-value" class="cell-value"></span>
+      </div>
+
+      <!-- Conteneur du tableur (masqué initialement) -->
+      <div id="spreadsheet-container" class="spreadsheet-container" hidden role="grid" aria-label="Grille du business plan">
+      </div>
+
+      <!-- Onglets des feuilles (masqués initialement) -->
+      <div id="sheet-tabs" class="sheet-tabs" hidden role="tablist" aria-label="Onglets des feuilles de calcul">
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- MODAL DE PAIEMENT                                         -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <div id="payment-modal" class="modal-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="payment-modal-title">
+    <div class="modal-card">
+      <!-- Bouton fermer -->
+      <button id="close-payment" class="modal-close" aria-label="Fermer la fenêtre de paiement">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <h2 id="payment-modal-title" class="modal-title">
+        <span aria-hidden="true">⭐</span> Passez à BizPlan Pro
+      </h2>
+      <p class="modal-subtitle">Générez des business plans illimités</p>
+
+      <!-- Carte de tarification -->
+      <div class="pricing-card">
+        <div class="pricing-amount">
+          <span class="pricing-value">5 000</span>
+          <span class="pricing-currency">FCFA / mois</span>
+        </div>
+      </div>
+
+      <!-- Liste des avantages -->
+      <ul class="feature-list" aria-label="Avantages de la version Pro">
+        <li><span class="feature-check" aria-hidden="true">✅</span> Business plans illimités</li>
+        <li><span class="feature-check" aria-hidden="true">✅</span> Téléchargement Excel</li>
+        <li><span class="feature-check" aria-hidden="true">✅</span> Modifications illimitées</li>
+        <li><span class="feature-check" aria-hidden="true">✅</span> Support prioritaire</li>
+        <li><span class="feature-check" aria-hidden="true">✅</span> Templates premium</li>
+      </ul>
+
+      <!-- Bouton de paiement -->
+      <button id="pay-btn" class="btn btn-pay" aria-label="Payer avec Mobile Money">
+        <span aria-hidden="true">📱</span> Payer avec Mobile Money
+      </button>
+
+      <!-- Attribution kpay -->
+      <p class="payment-attribution">
+        Paiement sécurisé par <strong>kpay.site</strong>
+      </p>
+
+      <p class="payment-security">
+        <span aria-hidden="true">🔒</span> Vos données de paiement sont protégées et chiffrées.
+      </p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- OVERLAY DE CHARGEMENT                                     -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <div id="loading-overlay" class="loading-overlay" hidden aria-live="assertive" role="status">
+    <div class="loading-content">
+      <div class="spinner" aria-hidden="true">
+        <div class="spinner-ring"></div>
+        <div class="spinner-ring"></div>
+        <div class="spinner-ring"></div>
+      </div>
+      <p id="loading-text" class="loading-text">Génération en cours...</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- BOUTON BASCULE MOBILE                                     -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <div class="mobile-toggle" id="mobile-toggle" role="tablist" aria-label="Basculer entre chat et business plan">
+    <button id="show-chat-btn" class="mobile-toggle-btn active" role="tab" aria-selected="true" aria-controls="chat-panel">
+      💬 Chat
+    </button>
+    <button id="show-spreadsheet-btn" class="mobile-toggle-btn" role="tab" aria-selected="false" aria-controls="spreadsheet-panel">
+      📊 Business Plan
+    </button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- SCRIPTS                                                   -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <script src="/js/spreadsheet.js"></script>
+  <script src="/js/excel-generator.js"></script>
+  <script src="/js/chat.js"></script>
+  <script src="/js/payment.js"></script>
+  <script src="/js/app.js"></script>
+
+</body>
+</html>
